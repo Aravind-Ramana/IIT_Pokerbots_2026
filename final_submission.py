@@ -19,6 +19,19 @@ class Player(BaseBot):
         self.bid_won = 0
         self.bid_lost = 0
 
+        self.epsilon = 0.05 
+        
+        self.strategies = {
+            'original': self._strategy1,
+        }
+        self.strategy_names = list(self.strategies.keys())
+
+        self.q_values = {name: 0.0 for name in self.strategy_names}
+        self.counts = {name: 0 for name in self.strategy_names}
+
+        self.current_strategy = None
+        self.last_bankroll = 0.0
+
     def get_preflop_strength(self, hole):
         rank_map = {
             '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8,
@@ -84,7 +97,15 @@ class Player(BaseBot):
         return (wins + 0.5 * ties) / max(1, iterations)
 
     def on_hand_start(self, game_info: GameInfo, current_state: PokerState) -> None:
-        pass
+
+        self.last_bankroll = game_info.bankroll 
+
+        if random.random() < self.epsilon:
+            self.current_strategy = random.choice(self.strategy_names)
+        else:
+            max_q = max(self.q_values.values())
+            best_strats = [s for s, q in self.q_values.items() if q == max_q]
+            self.current_strategy = random.choice(best_strats)
 
     def on_hand_end(self, game_info: GameInfo, current_state: PokerState) -> None:
         try:
@@ -100,7 +121,24 @@ class Player(BaseBot):
         except Exception:
             pass
 
+        if self.current_strategy is not None:
+            pnl = game_info.bankroll - self.last_bankroll
+            
+            self.counts[self.current_strategy] += 1
+            n = self.counts[self.current_strategy]
+            
+            old_q = self.q_values[self.current_strategy]
+            self.q_values[self.current_strategy] = old_q + (pnl - old_q) / n
+
     def get_move(self, game_info: GameInfo, current_state: PokerState):
+        if self.current_strategy is None:
+            self.current_strategy = self.strategy_names[0]
+
+        strategy_func = self.strategies[self.current_strategy]
+        return strategy_func(game_info, current_state)
+
+
+    def _strategy1(self, game_info: GameInfo, current_state: PokerState):
         my_cards = current_state.my_hand
         board_cards = current_state.board
         opp_revealed = current_state.opp_revealed_cards
