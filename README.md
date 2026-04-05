@@ -1,7 +1,7 @@
 # IIT-PokerBots-2026
 
-## By Aarya Gosar and Aravind Ramana | Team Travelling_Salesmen
-### Rank 4
+## Aravind Ramana and Aarya Gosar  | Team Travelling_Salesmen
+### Rank 5-Prelims and Finals
 
 ## Project Overview
 
