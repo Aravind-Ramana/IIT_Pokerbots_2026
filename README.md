@@ -5,9 +5,9 @@
 
 ## Project Overview
 
-This project implements a competitive poker bot for the IIT PokerBots 2026 competition. Our bot, developed by Team Travelling_Salesmen, achieved 4th place in the tournament. The bot uses advanced hand evaluation, Monte Carlo simulation, and adaptive strategies to make optimal decisions across different poker phases.
+This project implements a competitive poker bot for the IIT PokerBots 2026 competition. Our bot, developed by Team Travelling_Salesmen, achieved 5th place in the tournament. The bot uses  hand evaluation, Monte Carlo simulation, and adaptive strategies to make optimal decisions across different poker phases. Our presentation ppt explains the strategies in detailed.
 
-## Strategy and Approach
+## Strategy 
 
 ### Core Components
 
@@ -62,12 +62,6 @@ python Final_submission.py [args]
 
 The bot integrates with the pkbot framework and can be executed using the provided runner.
 
-## Results and Performance
 
-Achieved 4th place in IIT PokerBots 2026, demonstrating strong performance in:
-- Hand reading and equity estimation
-- Adaptive strategy against varying opponent styles
-- Efficient resource management during gameplay
-- Balanced aggression and caution across different game phases
 
 
